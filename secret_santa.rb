@@ -23,7 +23,7 @@ def list_check(names) #takes in array from str_to_list
 end
 
 def eliminate_family(names, name) #takes in hash from list_check
-  return names.reject{|k,v| k==name}
+  return names.reject{|k,v| k==name}.values.flatten(1)
 end
 
 names = "Luke Skywalker <luke@theforce.net>\nLeia Skywalker <leia@therebellion.org>\n\

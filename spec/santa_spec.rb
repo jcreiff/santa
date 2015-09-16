@@ -57,16 +57,16 @@ describe "list check method" do
 end
 
 describe "eliminate family method" do
-  it "returns a the name hash with family members removed" do
+  it "returns an array of names/emails with family members removed" do
     list = str_to_list(name_lists[3])
     hash = list_check(list)
 
-    expect(eliminate_family(hash, "Skywalker")).to eq({"Portokalos"=>[["Toula", "Portokalos", "<toula@manhunter.org>"],
-      ["Gus", "Portokalos", "<gus@weareallfruit.net>"]],"Wayne"=>[["Bruce", "Wayne", "<bruce@imbatman.com>"]],
-      "Brigman"=>[["Virgil", "Brigman", "<virgil@rigworkersunion.org>"], ["Lindsey", "Brigman", "<lindsey@iseealiens.net>"]]})
-    expect(eliminate_family(hash, "Portokalos")).to eq({"Skywalker"=>[["Luke", "Skywalker", "<luke@theforce.net>"],
-      ["Leia", "Skywalker", "<leia@therebellion.org>"]], "Wayne"=>[["Bruce", "Wayne", "<bruce@imbatman.com>"]],
-      "Brigman"=>[["Virgil", "Brigman", "<virgil@rigworkersunion.org>"], ["Lindsey", "Brigman", "<lindsey@iseealiens.net>"]]})
+    expect(eliminate_family(hash, "Skywalker")).to eq([["Toula", "Portokalos", "<toula@manhunter.org>"],
+      ["Gus", "Portokalos", "<gus@weareallfruit.net>"], ["Bruce", "Wayne", "<bruce@imbatman.com>"],
+      ["Virgil", "Brigman", "<virgil@rigworkersunion.org>"], ["Lindsey", "Brigman", "<lindsey@iseealiens.net>"]])
+    expect(eliminate_family(hash, "Portokalos")).to eq([["Luke", "Skywalker", "<luke@theforce.net>"],
+      ["Leia", "Skywalker", "<leia@therebellion.org>"], ["Bruce", "Wayne", "<bruce@imbatman.com>"],
+      ["Virgil", "Brigman", "<virgil@rigworkersunion.org>"], ["Lindsey", "Brigman", "<lindsey@iseealiens.net>"]])
   end
 end
 # doesn't assign family members
