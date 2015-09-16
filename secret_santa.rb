@@ -3,6 +3,7 @@ def str_to_list(str)
 end
 
 def santa_matcher(info)
+  list_check(info)
   matches = []
   info.each_with_index do |name, i|
     if info[i+1] != nil
@@ -12,6 +13,13 @@ def santa_matcher(info)
     end
   end
   matches
+end
+
+def list_check(names)
+  size = names.count/2
+  names.group_by{|name| name[1]}.each do |k, v|
+    raise ArgumentError, "Assignment Impossible" if v.count > size
+  end
 end
 
 names = "Luke Skywalker <luke@theforce.net>\nLeia Skywalker <leia@therebellion.org>\n\
