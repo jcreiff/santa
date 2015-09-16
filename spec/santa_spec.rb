@@ -2,6 +2,7 @@ require 'rspec'
 require './spec/spec_helper.rb'
 require './secret_santa.rb'
 require 'byebug'
+
 def name_lists
   {
     1=>"Luke Skywalker <luke@theforce.net>\nLeia Skywalker <leia@therebellion.org>\n",
@@ -27,14 +28,34 @@ describe "santa matcher method" do
     list = str_to_list(name_lists[2])
 
     expect(santa_matcher(list).size).to eq 3
-    expect(santa_matcher(list).first).to eq [["Gus", "Portokalos", "<gus@weareallfruit.net>"],
-     ["Bruce", "Wayne", "<bruce@imbatman.com>"]]
+    expect(santa_matcher(list).first.size).to eq 2
+    expect(santa_matcher(list).class).to eq Array
   end
 
   it "prevents assignment when impossible due to >50% presence of last name" do
     list = str_to_list(name_lists[1])
 
     expect {santa_matcher(list)}.to raise_error(ArgumentError, "Assignment Impossible")
+  end
+
+  it "only assigns each person to one secret santa, and each santa to one person" do
+    list = str_to_list(name_lists[3])
+    matches = santa_matcher(list)
+    santas = matches.map{|match| match[0]}
+    recipients = matches.map{|match| match[1]}
+
+    expect(santas.uniq.size).to eq list.size
+    expect(recipients.uniq.size).to eq list.size
+  end
+
+  it "does not assign santas to a member of own family" do
+    list = str_to_list(name_lists[3])
+    matches = santa_matcher(list)
+    santa_last_names = matches.map{|match| match[0]}.map{|name| name[1]}
+    recipient_last_names = matches.map{|match| match[1]}.map{|name| name[1]}
+    last_name_pairs = santa_last_names.zip(recipient_last_names)
+
+    expect(last_name_pairs.any?{|pair| pair.uniq.size<2}).to eq false
   end
 end
 
@@ -69,5 +90,3 @@ describe "eliminate family method" do
       ["Virgil", "Brigman", "<virgil@rigworkersunion.org>"], ["Lindsey", "Brigman", "<lindsey@iseealiens.net>"]])
   end
 end
-# doesn't assign family members
-# doesn't assign the same person multiple times
